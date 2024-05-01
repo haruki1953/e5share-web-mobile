@@ -41,6 +41,7 @@
     "lint-staged": "^15.2.2",
     "npm-run-all2": "^6.1.2",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "postcss-px-to-viewport": "1.1.1",
     "prettier": "^3.2.5",
     "sass": "^1.75.0",
     "typescript": "~5.4.0",
