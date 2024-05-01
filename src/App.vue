@@ -4,7 +4,7 @@ showFailToast('服务异常')
 
 <template>
   <div>
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
     <van-button color="linear-gradient(to right, #6ab7ff, #b8e994)">
       <van-icon name="chat-o" />
     </van-button>

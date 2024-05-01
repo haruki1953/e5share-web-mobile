@@ -1,13 +1,12 @@
 import axios from 'axios'
 import { useAuthStore } from '@/stores'
 import router from '@/router'
-
-const baseURL = 'http://big-event-vue-api-t.itheima.net'
+import { axiosConfig } from '@/config'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
-  baseURL,
-  timeout: 10000
+  baseURL: axiosConfig.baseURL,
+  timeout: axiosConfig.timeout
 })
 
 // 请求拦截器
