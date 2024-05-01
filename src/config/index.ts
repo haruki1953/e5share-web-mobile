@@ -14,7 +14,8 @@ export const webName = '小祥のE5分享'
 
 // axios配置，基地址、超时时间
 export const axiosConfig = {
-  baseURL: 'https://e5node.sakiko.top',
+  // baseURL: 'https://e5node.sakiko.top',
+  baseURL: 'http://127.0.0.1:23769',
   timeout: 10000
 }
 
