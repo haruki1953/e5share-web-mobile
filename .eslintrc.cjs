@@ -36,6 +36,7 @@ module.exports = {
     showToast: 'readonly',
     showLoadingToast: 'readonly',
     showSuccessToast: 'readonly',
-    showFailToast: 'readonly'
+    showFailToast: 'readonly',
+    showNotify: 'readonly'
   }
 }
