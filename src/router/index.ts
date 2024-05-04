@@ -1,3 +1,6 @@
+import { publicRoutes, webName } from '@/config'
+import { useAuthStore } from '@/stores'
+import { ref } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -55,4 +58,26 @@ const router = createRouter({
   ]
 })
 
+// 路由加载标识
+export const isLoading = ref(false)
+
+// 路由访问拦截
+router.beforeEach((to) => {
+  isLoading.value = true
+
+  // 根据路由设置页面标题，对于移动好像不必要，偷懒了
+  // document.title = to.meta.title || webName
+  document.title = webName
+  // 路由不存在，拦截到首页
+  if (router.resolve(to.path).matched.length === 0) {
+    return '/home'
+  }
+  // 如果没有token, 且访问的不是公开页面，拦截到登录，其他情况正常放行
+  const authStore = useAuthStore()
+  if (!authStore.token && !publicRoutes.includes(to.path)) return '/login'
+})
+
+router.afterEach(() => {
+  isLoading.value = false
+})
 export default router

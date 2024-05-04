@@ -74,7 +74,7 @@ const login = async () => {
     // 保存token
     authStore.setToken(res.data.token)
     // 跳转至首页
-    await router.push('/home')
+    await router.replace('/home')
     showToast('登录成功')
   } finally {
     // 无论成功或失败，都要解除状态
