@@ -23,7 +23,8 @@ export const axiosConfig = {
 import defaultAvatar from '@/assets/default_avatar.jpg'
 import emptyAvatar from '@/assets/empty_avatar.jpg'
 export const avatarConfig = {
-  baseURL: 'https://e5avatar.sakiko.top',
+  // baseURL: 'https://e5avatar.sakiko.top',
+  baseURL: 'http://127.0.0.1:23769/static/avatar',
   defaultAvatar,
   emptyAvatar
 }

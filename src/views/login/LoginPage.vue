@@ -10,6 +10,7 @@ import { useAuthStore } from '@/stores'
 import { adminContact, loginImage } from '@/config'
 import { userRules } from '@/config/rules'
 import type { FieldRule, FormInstance } from 'vant'
+import { loadAllData } from '@/utils/dataManage'
 
 const isRegister = ref(false)
 
@@ -75,6 +76,8 @@ const login = async () => {
     authStore.setToken(res.data.token)
     // 跳转至首页
     await router.replace('/home')
+    // 请求数据
+    loadAllData()
     showToast('登录成功')
   } finally {
     // 无论成功或失败，都要解除状态
