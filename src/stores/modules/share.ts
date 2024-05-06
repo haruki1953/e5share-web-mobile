@@ -6,7 +6,7 @@ import { applyInfoExpirationTime, webBaseUrl } from '@/config'
 import type { LinkInfo, ShareInfo } from '@/types/share'
 
 export const useShareStore = defineStore(
-  'e5share-share',
+  'e5mobile-share',
   () => {
     // 分享信息数组
     const shareInfoList = ref<ShareInfo[]>([])

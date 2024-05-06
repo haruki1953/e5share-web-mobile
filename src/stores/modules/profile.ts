@@ -7,7 +7,7 @@ import type { Notif } from '@/types/notif'
 
 // 用户信息模块
 export const useProfileStore = defineStore(
-  'e5share-profile',
+  'e5mobile-profile',
   () => {
     // 用户信息
     const user = ref<User>()

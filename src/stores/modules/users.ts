@@ -7,7 +7,7 @@ import { accountStatus, avatarConfig } from '@/config'
 import type { User } from '@/types/user'
 
 export const useUsersStore = defineStore(
-  'e5share-users',
+  'e5mobile-users',
   () => {
     // 用户列表，保存所有用户
     const userList = ref<User[]>([])

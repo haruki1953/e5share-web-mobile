@@ -8,7 +8,7 @@ import { useUsersStore } from './users'
 import type { Post } from '@/types/post'
 
 export const usePostsStore = defineStore(
-  'e5share-posts',
+  'e5mobile-posts',
   () => {
     // 动态列表 其中是对象，包含e5账号主id和帖子数组
     const postsList = ref<{ id: number; posts: Post[] }[]>([])

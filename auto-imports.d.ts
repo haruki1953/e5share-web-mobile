@@ -7,7 +7,9 @@ export {}
 declare global {
   const VanButton: typeof import('vant/es')['Button']
   const VanIcon: typeof import('vant/es')['Icon']
+  const closeToast: typeof import('vant/es')['closeToast']
   const showFailToast: typeof import('vant/es')['showFailToast']
+  const showLoadingToast: typeof import('vant/es')['showLoadingToast']
   const showNotify: typeof import('vant/es')['showNotify']
   const showToast: typeof import('vant/es')['showToast']
 }

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
-import { loadAllData, removeLogin } from '@/utils/dataManage'
+import { removeLogin } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import { isLoading } from '@/router'
+import type { ToastWrapperInstance } from 'vant'
 
 // 路由
 const router = useRouter()
@@ -20,6 +21,7 @@ const logout = async () => {
   // 退出前跳转到首页
   await router.push('/home')
   await removeLogin()
+  isShowPopup.value = false
 }
 
 // 弹出层
@@ -33,29 +35,115 @@ const avatarClick = () => {
     router.push('/login')
   }
 }
+
+// 切换路由加载效果
+// const loadingToast = ref<ToastWrapperInstance | null>(null)
+// watch(isLoading, (newValue, oldValue) => {
+//   console.log(`isLoading发生了变化，老值为${oldValue},新值为${newValue}`)
+//   if (isLoading.value) {
+//     console.log(`开启加载`)
+//     loadingToast.value = showLoadingToast({
+//       duration: 0,
+//       forbidClick: true
+//     })
+//   } else {
+//     console.log(`关闭加载`)
+
+//     closeToast()
+//   }
+// })
 </script>
 
 <template>
+  <van-overlay :show="isLoading">
+    <div class="wrapper">
+      <van-loading color="#1989fa" />
+    </div>
+  </van-overlay>
   <!-- 左侧弹出 -->
   <van-popup
     v-model:show="isShowPopup"
     position="left"
-    :style="{ width: '80%', height: '100%' }"
+    :style="{ width: '90%', height: '100%' }"
   >
     <div class="popup-box">
-      <div class="user-avatar">
-        <van-image
-          round
-          width="80px"
-          height="80px"
-          :src="profileStore.user?.avatar"
-        ></van-image>
+      <div
+        class="user van-haptics-feedback"
+        @click="router.push(`/user/${profileStore.user?.id}`)"
+      >
+        <div class="user-avatar">
+          <van-image round :src="profileStore.user?.avatar"></van-image>
+        </div>
+        <div class="user-nickname">{{ profileStore.user?.nickname }}</div>
+        <div class="user-username">@{{ profileStore.user?.username }}</div>
       </div>
-      <div class="user-nickname">长期素食</div>
-      <div class="user-username">@NagasakiSoyo</div>
+      <van-divider :hairline="false" />
+      <div class="cell-nav" @click="isShowPopup = false">
+        <van-cell
+          title="首页"
+          clickable
+          to="/home"
+          size="large"
+          icon="wap-home"
+          replace
+        />
+        <van-cell
+          title="用户列表"
+          clickable
+          to="/user-list"
+          size="large"
+          icon="friends"
+          replace
+        />
+        <van-cell
+          title="E5分享管理"
+          clickable
+          to="/share"
+          size="large"
+          icon="cluster"
+          replace
+        />
+        <van-cell title="通知" clickable to="/notif" size="large" icon="bell" />
+        <van-cell
+          title="动态"
+          clickable
+          to="/post"
+          size="large"
+          icon="comment"
+          replace
+        />
+        <van-cell
+          title="个人主页"
+          clickable
+          :to="`/user/${profileStore.user?.id}`"
+          size="large"
+          icon="user"
+        />
+        <van-cell
+          title="设置"
+          clickable
+          to="/setting"
+          size="large"
+          icon="setting"
+        />
+      </div>
+      <van-button
+        class="logout-button"
+        type="primary"
+        round
+        block
+        @click="logout"
+      >
+        退出登录
+      </van-button>
     </div>
   </van-popup>
-  <van-nav-bar @click-left="avatarClick" @click-right="router.push('/setting')">
+  <van-nav-bar
+    @click-left="avatarClick"
+    @click-right="router.push('/setting')"
+    safe-area-inset-top
+    placeholder
+  >
     <template #title>
       <div
         class="nav-logo"
@@ -64,18 +152,17 @@ const avatarClick = () => {
     </template>
     <template #left>
       <van-image
+        class="nav-avatar"
         round
-        width="32px"
-        height="32px"
         :src="profileStore.user?.avatar || avatarConfig.defaultAvatar"
       ></van-image>
     </template>
     <template #right>
-      <van-icon name="setting" size="25" color="#323233" />
+      <van-icon class="nav-setting" name="setting" color="#323233" />
     </template>
   </van-nav-bar>
   <router-view></router-view>
-  <van-tabbar route>
+  <van-tabbar route safe-area-inset-bottom placeholder replace>
     <van-tabbar-item replace to="/home" icon="wap-home"></van-tabbar-item>
     <van-tabbar-item replace to="/user-list" icon="friends"></van-tabbar-item>
     <van-tabbar-item replace to="/share" icon="cluster"></van-tabbar-item>
@@ -107,13 +194,18 @@ const avatarClick = () => {
 </template>
 
 <style lang="scss" scoped>
-.van-tabbar {
-  border-top: 1px solid #dcdfe6; /* 上边框：3 像素宽，蓝色实线 */
-  border-radius: 30px 30px 0 0;
+.van-tabbar__placeholder {
+  :deep() {
+    .van-tabbar {
+      border-top: 1px solid #dcdfe6; /* 上边框：3 像素宽 */
+      // border-radius: 30px 30px 0 0;
+    }
+  }
 }
+
 .van-nav-bar {
-  border-bottom: 1px solid #dcdfe6; /* 上边框：3 像素宽，蓝色实线 */
-  border-radius: 0 0 30px 30px;
+  border-bottom: 1px solid #dcdfe6; /* 下边框：3 像素宽 */
+  // border-radius: 0 0 30px 30px;
   .nav-logo {
     width: 30px;
     height: 30px;
@@ -121,21 +213,67 @@ const avatarClick = () => {
     background-position: center;
     background-size: 30px auto;
   }
-}
-
-.user-nickname {
-  font-size: 18px; /* 设置昵称字体大小 */
-  font-weight: bold; /* 设置昵称字体加粗 */
-  color: #333; /* 设置昵称字体颜色 */
-  margin-bottom: 5px; /* 设置昵称下方留白 */
-}
-
-.user-username {
-  font-size: 14px; /* 设置用户名字体大小 */
-  color: #666; /* 设置用户名字体颜色 */
+  .nav-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .nav-setting {
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+  }
 }
 
 .popup-box {
-  margin: 20px;
+  margin: 30px;
+  .user-avatar {
+    .van-image {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  .user-nickname {
+    font-size: 16px; /* 设置昵称字体大小 */
+    font-weight: bold; /* 设置昵称字体加粗 */
+    color: #333; /* 设置昵称字体颜色 */
+    margin-bottom: 5px; /* 设置昵称下方留白 */
+  }
+  .user-username {
+    font-size: 14px; /* 设置用户名字体大小 */
+    color: #666; /* 设置用户名字体颜色 */
+  }
+  .cell-nav {
+    .van-cell {
+      border-radius: 20px; /* 设置圆角 */
+      :deep() {
+        .van-cell__title {
+          margin-left: 10px;
+          font-weight: bold; /* 设置昵称字体加粗 */
+          color: #333; /* 设置昵称字体颜色 */
+        }
+        .van-cell__left-icon {
+          width: 20px;
+          height: 20px;
+          font-size: 20px;
+        }
+        // .van-cell__right-icon {
+        //   display: none;
+        // }
+      }
+    }
+  }
+  .logout-button {
+    margin-top: 10px;
+  }
+}
+
+.van-overlay {
+  background: rgba(247, 248, 250, 0.7);
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
 }
 </style>
