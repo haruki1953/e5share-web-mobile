@@ -29,8 +29,17 @@ export const avatarConfig = {
   emptyAvatar
 }
 
+interface LinkInfo {
+  [key: string]: {
+    name: string
+    fontawesomeClass?: string
+    logoUrl?: string
+    description: string
+    link: string
+  }
+}
 // 联系方式
-export const contactInfo = {
+export const contactInfo: LinkInfo = {
   twitter: {
     name: 'X / Twitter', // 平台名称
     fontawesomeClass: 'fab fa-twitter', // fontawesome图标的class
@@ -47,13 +56,13 @@ export const contactInfo = {
   github: {
     name: 'Github',
     fontawesomeClass: 'fab fa-github',
-    description: 'haruki1953/e5share_vue3',
+    description: 'haruki1953/e5share-web-mobile',
     link: 'https://github.com/haruki1953/e5share_vue3'
   }
 }
 
 // 友情链接
-export const friendshipLinks = {
+export const friendshipLinks: LinkInfo = {
   sakikoAlist: {
     name: '小祥の小窝',
     logoUrl: 'https://static.sakiko.top/sakiko/sakiko.ico',

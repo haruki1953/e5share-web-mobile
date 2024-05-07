@@ -38,6 +38,6 @@ module.exports = {
     showSuccessToast: 'readonly',
     showFailToast: 'readonly',
     showNotify: 'readonly',
-    closeToast: 'readonly'
+    showConfirmDialog: 'readonly'
   }
 }

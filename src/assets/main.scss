@@ -2,6 +2,18 @@ body {
   margin: 0;
   background-color: #f7f8fa;
 }
+
+.my-text-h1 {
+  font-size: 16px; 
+  font-weight: bold; 
+  color: #333; 
+}
+
+.my-text-p1 {
+  font-size: 14px; 
+  color: #666; 
+}
+
 /* fade-slide */
 .fade-slide-leave-active,
 .fade-slide-enter-active {

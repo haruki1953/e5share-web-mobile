@@ -10,3 +10,5 @@ props.bar // number | undefined
 <template>
   <div>测试</div>
 </template>
+
+<style lang="scss" scoped></style>

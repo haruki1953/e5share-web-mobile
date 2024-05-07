@@ -7,13 +7,20 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AboutmeTag: typeof import('./src/components/AboutmeTag.vue')['default']
+    E5sharingProgress: typeof import('./src/components/E5sharingProgress.vue')['default']
+    RelatedUsers: typeof import('./src/components/RelatedUsers.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TestBox: typeof import('./src/components/TestBox.vue')['default']
+    UserCard: typeof import('./src/components/UserCard.vue')['default']
+    UserItem: typeof import('./src/components/UserItem.vue')['default']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
     VanCheckbox: typeof import('vant/es')['Checkbox']
+    VanCollapse: typeof import('vant/es')['Collapse']
+    VanCollapseItem: typeof import('vant/es')['CollapseItem']
     VanDivider: typeof import('vant/es')['Divider']
     VanField: typeof import('vant/es')['Field']
     VanForm: typeof import('vant/es')['Form']

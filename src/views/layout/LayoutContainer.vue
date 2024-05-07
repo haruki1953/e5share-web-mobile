@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
 import { removeLogin } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import { isLoading } from '@/router'
-import type { ToastWrapperInstance } from 'vant'
+import LinkCollapse from './components/LinkCollapse.vue'
 
 // 路由
 const router = useRouter()
@@ -18,6 +18,10 @@ const postsStore = usePostsStore()
 
 // 退出登录
 const logout = async () => {
+  await showConfirmDialog({
+    title: '温馨提示',
+    message: '您确认要退出登录吗'
+  })
   // 退出前跳转到首页
   await router.push('/home')
   await removeLogin()
@@ -35,27 +39,10 @@ const avatarClick = () => {
     router.push('/login')
   }
 }
-
-// 切换路由加载效果
-// const loadingToast = ref<ToastWrapperInstance | null>(null)
-// watch(isLoading, (newValue, oldValue) => {
-//   console.log(`isLoading发生了变化，老值为${oldValue},新值为${newValue}`)
-//   if (isLoading.value) {
-//     console.log(`开启加载`)
-//     loadingToast.value = showLoadingToast({
-//       duration: 0,
-//       forbidClick: true
-//     })
-//   } else {
-//     console.log(`关闭加载`)
-
-//     closeToast()
-//   }
-// })
 </script>
 
 <template>
-  <van-overlay :show="isLoading">
+  <van-overlay class="loading-overlay" :show="isLoading">
     <div class="wrapper">
       <van-loading color="#1989fa" />
     </div>
@@ -74,8 +61,12 @@ const avatarClick = () => {
         <div class="user-avatar">
           <van-image round :src="profileStore.user?.avatar"></van-image>
         </div>
-        <div class="user-nickname">{{ profileStore.user?.nickname }}</div>
-        <div class="user-username">@{{ profileStore.user?.username }}</div>
+        <div class="user-nickname my-text-h1">
+          {{ profileStore.user?.nickname }}
+        </div>
+        <div class="user-username my-text-p1">
+          @{{ profileStore.user?.username }}
+        </div>
       </div>
       <van-divider :hairline="false" />
       <div class="cell-nav" @click="isShowPopup = false">
@@ -136,6 +127,9 @@ const avatarClick = () => {
       >
         退出登录
       </van-button>
+    </div>
+    <div class="popup-buttom">
+      <LinkCollapse></LinkCollapse>
     </div>
   </van-popup>
   <van-nav-bar
@@ -224,50 +218,51 @@ const avatarClick = () => {
   }
 }
 
-.popup-box {
-  margin: 30px;
-  .user-avatar {
-    .van-image {
-      width: 80px;
-      height: 80px;
-    }
-  }
-  .user-nickname {
-    font-size: 16px; /* 设置昵称字体大小 */
-    font-weight: bold; /* 设置昵称字体加粗 */
-    color: #333; /* 设置昵称字体颜色 */
-    margin-bottom: 5px; /* 设置昵称下方留白 */
-  }
-  .user-username {
-    font-size: 14px; /* 设置用户名字体大小 */
-    color: #666; /* 设置用户名字体颜色 */
-  }
-  .cell-nav {
-    .van-cell {
-      border-radius: 20px; /* 设置圆角 */
-      :deep() {
-        .van-cell__title {
-          margin-left: 10px;
-          font-weight: bold; /* 设置昵称字体加粗 */
-          color: #333; /* 设置昵称字体颜色 */
-        }
-        .van-cell__left-icon {
-          width: 20px;
-          height: 20px;
-          font-size: 20px;
-        }
-        // .van-cell__right-icon {
-        //   display: none;
-        // }
+.van-popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .popup-box {
+    margin: 30px;
+    .user-avatar {
+      .van-image {
+        width: 80px;
+        height: 80px;
       }
     }
+    .user-nickname {
+      margin-bottom: 5px;
+    }
+    .cell-nav {
+      .van-cell {
+        border-radius: 20px; /* 设置圆角 */
+        :deep() {
+          .van-cell__title {
+            margin-left: 10px;
+            font-weight: bold; /* 设置昵称字体加粗 */
+            color: #333; /* 设置昵称字体颜色 */
+          }
+          .van-cell__left-icon {
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+          }
+          // .van-cell__right-icon {
+          //   display: none;
+          // }
+        }
+      }
+    }
+    .logout-button {
+      margin-top: 10px;
+    }
   }
-  .logout-button {
-    margin-top: 10px;
+  .popup-buttom {
+    margin: 0 30px 30px 30px;
   }
 }
 
-.van-overlay {
+.loading-overlay {
   background: rgba(247, 248, 250, 0.7);
   .wrapper {
     display: flex;

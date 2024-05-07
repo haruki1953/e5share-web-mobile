@@ -1,3 +1,3 @@
 <template>
-  <div>views/home/HomePage.vue</div>
+  <UserCard></UserCard>
 </template>
