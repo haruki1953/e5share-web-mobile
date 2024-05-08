@@ -40,6 +40,10 @@ export interface User {
   helped_by_users: number[]
 }
 
+export interface UserForShow extends User {
+  isUser?: boolean
+}
+
 // 用户个人信息响应数据
 export interface ProfileRes extends UserRes {
   notifications: string

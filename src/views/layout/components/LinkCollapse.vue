@@ -3,6 +3,11 @@ import { ref } from 'vue'
 import { contactInfo, friendshipLinks } from '@/config'
 
 const activeCollapseName = ref('')
+
+// 打开链接
+const openLink = (url: string) => {
+  window.open(url, '_blank')
+}
 </script>
 <template>
   <van-collapse v-model="activeCollapseName" accordion>
@@ -11,7 +16,7 @@ const activeCollapseName = ref('')
         v-for="linkKey in Object.keys(contactInfo)"
         :key="linkKey"
         :title="contactInfo[linkKey].name"
-        :url="contactInfo[linkKey].link"
+        @click="openLink(contactInfo[linkKey].link)"
         :label="contactInfo[linkKey].description"
         clickable
         class="link-cell"
@@ -35,7 +40,7 @@ const activeCollapseName = ref('')
         v-for="linkKey in Object.keys(friendshipLinks)"
         :key="linkKey"
         :title="friendshipLinks[linkKey].name"
-        :url="friendshipLinks[linkKey].link"
+        @click="openLink(friendshipLinks[linkKey].link)"
         :label="friendshipLinks[linkKey].description"
         clickable
         class="link-cell"

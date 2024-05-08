@@ -47,7 +47,6 @@ const avatarClick = () => {
       <van-loading color="#1989fa" />
     </div>
   </van-overlay>
-  <!-- 左侧弹出 -->
   <van-popup
     v-model:show="isShowPopup"
     position="left"
@@ -137,6 +136,7 @@ const avatarClick = () => {
     @click-right="router.push('/setting')"
     safe-area-inset-top
     placeholder
+    fixed
   >
     <template #title>
       <div
@@ -191,30 +191,33 @@ const avatarClick = () => {
 .van-tabbar__placeholder {
   :deep() {
     .van-tabbar {
-      border-top: 1px solid #dcdfe6; /* 上边框：3 像素宽 */
+      border-top: 1px solid #ddd; /* 上边框*/
       // border-radius: 30px 30px 0 0;
     }
   }
 }
-
-.van-nav-bar {
-  border-bottom: 1px solid #dcdfe6; /* 下边框：3 像素宽 */
-  // border-radius: 0 0 30px 30px;
-  .nav-logo {
-    width: 30px;
-    height: 30px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 30px auto;
-  }
-  .nav-avatar {
-    width: 32px;
-    height: 32px;
-  }
-  .nav-setting {
-    width: 25px;
-    height: 25px;
-    font-size: 25px;
+.van-nav-bar__placeholder {
+  :deep() {
+    .van-nav-bar {
+      border-bottom: 1px solid #ddd; /* 下边框*/
+      // border-radius: 0 0 30px 30px;
+      .nav-logo {
+        width: 30px;
+        height: 30px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 30px auto;
+      }
+      .nav-avatar {
+        width: 32px;
+        height: 32px;
+      }
+      .nav-setting {
+        width: 25px;
+        height: 25px;
+        font-size: 25px;
+      }
+    }
   }
 }
 
@@ -240,7 +243,7 @@ const avatarClick = () => {
           .van-cell__title {
             margin-left: 10px;
             font-weight: bold; /* 设置昵称字体加粗 */
-            color: #333; /* 设置昵称字体颜色 */
+            // color: var(--my-color-b1); /* 设置昵称字体颜色 */
           }
           .van-cell__left-icon {
             width: 20px;

@@ -1,11 +1,50 @@
 <script setup lang="ts">
-// const props = defineProps({
-//   foo: { type: String, required: true },
-//   bar: Number
-// })
+import { computed } from 'vue'
+import { useUsersStore } from '@/stores'
+
+const props = withDefaults(
+  defineProps<{
+    userId: number
+    usernameLink?: boolean
+  }>(),
+  {
+    usernameLink: true
+  }
+)
+
+const usersStore = useUsersStore()
+// 获取用户
+const user = computed(() => {
+  // 根据id查找用户
+  return usersStore.findUserForShow(props.userId)
+})
 </script>
 <template>
-  <div>测试</div>
+  <div class="user-item">
+    <div class="user-item">
+      <van-image class="avatar-img" round :src="user.avatar"></van-image>
+    </div>
+    <div>
+      <div class="my-text-h3">{{ user.nickname }}</div>
+      <div
+        @click.stop="usernameLink && $router.push(`/user/${user.id}`)"
+        class="my-text-p2 van-haptics-feedback"
+      >
+        @{{ user.username }}
+      </div>
+    </div>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.user-item {
+  display: flex;
+  align-items: center;
+  line-height: initial;
+}
+.avatar-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+</style>

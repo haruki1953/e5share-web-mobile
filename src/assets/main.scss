@@ -1,18 +1,45 @@
+:root {
+  --my-color-b1: #444;
+  --my-color-b2: #555;
+  --my-color-b3: #666;
+}
+
 body {
   margin: 0;
-  background-color: #f7f8fa;
+  background-color: #f7f7f7;
 }
+
 
 .my-text-h1 {
   font-size: 16px; 
   font-weight: bold; 
-  color: #333; 
+  color: var(--my-color-b1); 
+}
+
+.my-text-h2 {
+  font-size: 15px; 
+  font-weight: bold; 
+  color: var(--my-color-b2); 
+}
+
+.my-text-h3 {
+  font-size: 14px; 
+  font-weight: bold; 
+  color: var(--my-color-b2); 
 }
 
 .my-text-p1 {
+  font-size: 15px; 
+  color: #666; 
+  color: var(--my-color-b3); 
+}
+
+.my-text-p2 {
   font-size: 14px; 
   color: #666; 
+  color: var(--my-color-b3); 
 }
+
 
 /* fade-slide */
 .fade-slide-leave-active,

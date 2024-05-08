@@ -5,7 +5,9 @@
  * @param {(string|Date)} time 时间字符串或Date对象，例如 "2024-02-29T10:05:34.089Z"
  * @returns {string} 格式化后的本地时间字符串，例如 "2024-02-29 10:05"
  */
-export const formatTime = (time: string | Date): string | null => {
+export const formatTime = (time: string | Date | null): string | null => {
+  if (!time) return null
+
   const date = new Date(time)
 
   // 检查日期对象是否有效
@@ -30,7 +32,9 @@ export const formatTime = (time: string | Date): string | null => {
  * @param {(string|Date)} time 时间字符串或Date对象，例如 "2024-02-29T10:05:34.089Z"
  * @returns {string} 格式化后的本地日期字符串，例如 "2024-02-29"
  */
-export const formatDate = (time: string | Date): string | null => {
+export const formatDate = (time: string | Date | null): string | null => {
+  if (!time) return null
+
   const date = new Date(time)
 
   // 检查日期对象是否有效
