@@ -24,7 +24,12 @@ const e5expirationDate = computed(() =>
         class="user-box van-haptics-feedback"
       >
         <div class="user-avatar">
-          <van-image class="avatar-img" round :src="user.avatar"></van-image>
+          <van-image
+            class="avatar-img"
+            round
+            :src="user.avatar"
+            lazy-load
+          ></van-image>
 
           <div class="tag-box">
             <AboutmeTag :user="user"></AboutmeTag>

@@ -12,6 +12,14 @@ const dataList = computed(() => {
 </script>
 
 <template>
-  <UserCard v-for="item in dataList" :key="item.id" :user="item"></UserCard>
-  <van-empty v-if="!dataList.length" description="暂无分享" />
+  <div class="card-container">
+    <UserCard v-for="item in dataList" :key="item.id" :user="item"></UserCard>
+    <van-empty v-if="!dataList.length" description="暂无分享" />
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.card-container {
+  margin-bottom: 50px;
+}
+</style>

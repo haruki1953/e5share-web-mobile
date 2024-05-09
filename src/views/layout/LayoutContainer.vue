@@ -156,7 +156,13 @@ const avatarClick = () => {
     </template>
   </van-nav-bar>
   <router-view></router-view>
-  <van-tabbar route safe-area-inset-bottom placeholder replace>
+  <van-tabbar
+    route
+    safe-area-inset-bottom
+    placeholder
+    replace
+    id="layout-tabbar"
+  >
     <van-tabbar-item replace to="/home" icon="wap-home"></van-tabbar-item>
     <van-tabbar-item replace to="/user-list" icon="friends"></van-tabbar-item>
     <van-tabbar-item replace to="/share" icon="cluster"></van-tabbar-item>

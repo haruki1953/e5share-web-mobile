@@ -22,7 +22,12 @@ const user = computed(() => {
 <template>
   <div class="user-item">
     <div class="user-item">
-      <van-image class="avatar-img" round :src="user.avatar"></van-image>
+      <van-image
+        class="avatar-img"
+        round
+        :src="user.avatar"
+        lazy-load
+      ></van-image>
     </div>
     <div>
       <div class="my-text-h3">{{ user.nickname }}</div>

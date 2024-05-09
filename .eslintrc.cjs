@@ -38,6 +38,7 @@ module.exports = {
     showSuccessToast: 'readonly',
     showFailToast: 'readonly',
     showNotify: 'readonly',
-    showConfirmDialog: 'readonly'
+    showConfirmDialog: 'readonly',
+    Lazyload: 'readonly'
   }
 }
