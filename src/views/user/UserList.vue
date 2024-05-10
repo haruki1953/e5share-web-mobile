@@ -86,5 +86,9 @@ onMounted(async () => {
 }
 .sheet-content {
   margin: 10px;
+  .van-field {
+    border-radius: 22px;
+    background-color: #f5f5f5;
+  }
 }
 </style>

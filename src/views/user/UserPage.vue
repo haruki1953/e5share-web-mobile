@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useUsersStore, useProfileStore, usePostsStore } from '@/stores'
 import { accountStatus } from '@/config'
 import { formatDate, formatTime } from '@/utils/timeUtils'
-// import ApplyDrawer from './components/ApplyDrawer.vue'
+import ApplySheet from './components/ApplySheet.vue'
 // import StopDialog from './components/StopDialog.vue'
 
 const route = useRoute()
@@ -69,11 +69,11 @@ const buttonDisplay = computed(() => {
   }
 })
 
-// // 分享申请抽屉
-// const applyDrawerRef = ref()
-// const shareApply = () => {
-//   applyDrawerRef.value.open()
-// }
+// 分享申请面板
+const applySheetRef = ref()
+const shareApply = () => {
+  applySheetRef.value.open()
+}
 
 // // 分享停止接受对话框
 // const stopDialogRef = ref()
@@ -114,8 +114,19 @@ const buttonDisplay = computed(() => {
   />
   <van-empty v-if="!user" description="用户不存在" />
   <div v-else>
+    <ApplySheet
+      :e5id="user.id"
+      ref="applySheetRef"
+      v-if="buttonDisplay.applyButton"
+    ></ApplySheet>
     <div class="button-box">
-      <van-button type="primary" block round v-if="buttonDisplay.applyButton">
+      <van-button
+        type="primary"
+        block
+        round
+        v-if="buttonDisplay.applyButton"
+        @click="shareApply"
+      >
         向TA申请E5账号
       </van-button>
       <van-button type="danger" block round v-if="buttonDisplay.stopButton">
@@ -162,9 +173,9 @@ const buttonDisplay = computed(() => {
   }
 }
 .button-box {
-  padding: 10px 30px;
+  padding: 0 30px;
   .van-button {
-    margin: 10px;
+    margin: 15px 0;
   }
 }
 </style>

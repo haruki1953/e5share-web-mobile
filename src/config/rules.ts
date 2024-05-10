@@ -63,7 +63,7 @@ export const avatarRule = {
 }
 
 // 分享相关信息的验证规则
-export const shareRules = {
+export const shareRules: Record<'message' | 'note', FieldRule[]> = {
   message: [
     {
       pattern: /^.{0,500}$/,
