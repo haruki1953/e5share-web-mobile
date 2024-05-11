@@ -2,6 +2,7 @@
   --my-color-b1: #444;
   --my-color-b2: #555;
   --my-color-b3: #666;
+  --my-color-b4: #777;
 }
 
 body {
@@ -30,14 +31,17 @@ body {
 
 .my-text-p1 {
   font-size: 15px; 
-  color: #666; 
   color: var(--my-color-b3); 
 }
 
 .my-text-p2 {
   font-size: 14px; 
-  color: #666; 
   color: var(--my-color-b3); 
+}
+
+.my-text-p3{
+  font-size: 13px; 
+  color: var(--my-color-b4); 
 }
 
 

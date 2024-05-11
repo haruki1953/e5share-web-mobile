@@ -64,7 +64,7 @@ const applyInfo = computed(() => {
   <van-action-sheet v-model:show="visibleDrawer" :closeable="false">
     <div class="sheet-content">
       <div v-if="applyInfo">
-        <van-notice-bar color="#1989fa" background="#ecf9ff" left-icon="info-o">
+        <van-notice-bar color="#07c160" background="#e8f7e5" left-icon="info-o">
           已发送申请，联系E5帐号主并发送链接，即可帮助其快速定位到您的申请信息
         </van-notice-bar>
         <van-button

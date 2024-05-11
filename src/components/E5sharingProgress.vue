@@ -36,7 +36,12 @@ const remainingDays = computed(() => {
 })
 // 进度值
 const progressVal = computed(() => {
-  if (!startDate.value || !totalDays.value || !remainingDays.value) return null
+  if (
+    !startDate.value ||
+    typeof totalDays.value !== 'number' ||
+    typeof remainingDays.value !== 'number'
+  )
+    return null
   if (startDate.value > new Date()) {
     return 0 // 未开始状态，即订阅开始日期晚于当前日期
   }
@@ -48,15 +53,35 @@ const progressVal = computed(() => {
 // 状态 剩余天数大于10时为空，小于时为warning，为小于等于0时为exception
 const progressStatus = computed(() => {
   let status = '' // 默认为空状态
-  if (!startDate.value || !totalDays.value || !remainingDays.value) return null
+  if (
+    !startDate.value ||
+    typeof totalDays.value !== 'number' ||
+    typeof remainingDays.value !== 'number'
+  )
+    return null
   if (remainingDays.value <= 10 && remainingDays.value > 0) {
     status = 'warning' // 警告状态
   } else if (remainingDays.value <= 0) {
-    status = 'exception' // 异常状态
+    status = 'exception' // 异常状态、过期
   } else if (startDate.value > new Date()) {
     status = 'notStarted' // 未开始状态，即订阅开始日期晚于当前日期
   }
   return status
+})
+// 颜色
+const progressColor = computed(() => {
+  let color = '#409eff' // 默认为蓝色
+  switch (progressStatus.value) {
+    case 'warning':
+      color = '#e6a23c'
+      break
+    case 'exception':
+      color = '#f56c6c'
+      break
+    default:
+      break
+  }
+  return color
 })
 
 const currentRate = ref(0)
@@ -73,20 +98,31 @@ defineExpose({
 </script>
 <template>
   <div>
+    <!-- <div>startDate{{ formatDate(startDate) }}</div>
+    <div>progressVal{{ progressVal }}</div>
+    <div>totalDays{{ totalDays }}</div>
+    <div>remainingDays{{ remainingDays }}</div> -->
     <van-circle
       v-if="
         user.account_status === accountStatus.sharing &&
-        progressVal &&
-        totalDays &&
-        remainingDays
+        typeof progressVal === 'number' &&
+        typeof totalDays === 'number' &&
+        typeof remainingDays === 'number'
       "
       v-model:current-rate="currentRate"
       :rate="progressVal"
       :speed="100"
       :stroke-width="50"
       layer-color="#ebedf0"
+      :color="progressColor"
     >
-      <div class="circle-content">
+      <div class="circle-content" v-if="progressStatus === 'exception'">
+        <div class="my-text-h2">已过期</div>
+      </div>
+      <div class="circle-content" v-else-if="progressStatus === 'notStarted'">
+        <div class="my-text-h2">未开始</div>
+      </div>
+      <div class="circle-content" v-else>
         <div>
           <span class="remaining-days">{{ remainingDays }}/</span>
           <span class="total-days">{{ totalDays }}</span>
@@ -102,7 +138,7 @@ defineExpose({
       :stroke-width="50"
       layer-color="#ebedf0"
     >
-      未分享
+      <div class="my-text-h2">未分享</div>
     </van-circle>
   </div>
 </template>

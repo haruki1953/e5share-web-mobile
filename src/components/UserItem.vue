@@ -21,7 +21,7 @@ const user = computed(() => {
 </script>
 <template>
   <div class="user-item">
-    <div class="user-item">
+    <div class="avatar-item">
       <van-image
         class="avatar-img"
         round
@@ -29,7 +29,7 @@ const user = computed(() => {
         lazy-load
       ></van-image>
     </div>
-    <div>
+    <div class="name-box">
       <div class="my-text-h3">{{ user.nickname }}</div>
       <div
         @click.stop="usernameLink && $router.push(`/user/${user.id}`)"
@@ -47,9 +47,23 @@ const user = computed(() => {
   align-items: center;
   line-height: initial;
 }
+.avatar-item {
+  display: flex;
+  align-items: center;
+  line-height: initial;
+}
 .avatar-img {
   width: 40px;
   height: 40px;
   margin-right: 10px;
+}
+
+.name-box {
+  overflow: hidden;
+  div {
+    overflow: hidden;
+    white-space: nowrap; /* 防止文本换行 */
+    text-overflow: ellipsis;
+  }
 }
 </style>

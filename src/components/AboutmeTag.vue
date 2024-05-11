@@ -36,9 +36,13 @@ defineExpose({
 
 <template>
   <div class="tag-box">
-    <van-tag type="success" v-if="isHelpingByThisUser">您正在被TA帮助</van-tag>
-    <van-tag type="primary" v-if="isHelpingThisUser">您正在帮助TA</van-tag>
-    <van-tag type="default" v-if="isMyself">您的信息</van-tag>
+    <van-tag type="success" plain v-if="isHelpingByThisUser"
+      >您正在被TA帮助</van-tag
+    >
+    <van-tag type="primary" plain v-if="isHelpingThisUser"
+      >您正在帮助TA</van-tag
+    >
+    <van-tag type="default" plain v-if="isMyself">您的信息</van-tag>
   </div>
 </template>
 

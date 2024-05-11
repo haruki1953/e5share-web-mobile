@@ -12,3 +12,8 @@ export interface LinkInfo {
   link: string
   time: Date
 }
+
+export interface E5Date {
+  subscriptionDate: string
+  expirationDate: string
+}

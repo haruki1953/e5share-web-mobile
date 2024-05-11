@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useUsersStore, useProfileStore, usePostsStore } from '@/stores'
+import {
+  useUsersStore,
+  useProfileStore,
+  usePostsStore,
+  useShareStore
+} from '@/stores'
 import { accountStatus } from '@/config'
 import { formatDate, formatTime } from '@/utils/timeUtils'
 import ApplySheet from './components/ApplySheet.vue'
-// import StopDialog from './components/StopDialog.vue'
+import StopSheet from './components/StopSheet.vue'
+import AddShareSheet from './components/AddShareSheet.vue'
 
 const route = useRoute()
 const router = useRouter()
 const usersStore = useUsersStore()
 const profileStore = useProfileStore()
 const postsStore = usePostsStore()
+const shareStore = useShareStore()
 
 // 根据路由参数获取用户数据
 const user = computed(() => {
@@ -46,12 +53,12 @@ const buttonDisplay = computed(() => {
   }
 
   // 添加至分享信息
-  // 登录用户状态为分享 且 当前用户非登录用户 且 当前用户未被自己分享，显示添加至分享信息按钮
+  // 登录用户状态为分享 且 当前用户非登录用户 且 当前用户未在分享信息，显示添加至分享信息按钮
   let addshareButton =
     user.value?.id &&
     profileStore.user?.account_status === accountStatus.sharing &&
     user.value.id !== profileStore.user?.id &&
-    !profileStore.user.helping_users.includes(user.value.id)
+    !shareStore.findShareInfoByUserId(user.value.id)
 
   // 关注动态
   let followButton = user.value?.id && postsStore.shouldAddFollow(user.value.id)
@@ -70,37 +77,47 @@ const buttonDisplay = computed(() => {
 })
 
 // 分享申请面板
-const applySheetRef = ref()
+const applySheetRef = ref<InstanceType<typeof ApplySheet>>()
 const shareApply = () => {
-  applySheetRef.value.open()
+  applySheetRef.value?.open()
 }
 
-// // 分享停止接受对话框
-// const stopDialogRef = ref()
-// const shareStop = () => {
-//   stopDialogRef.value.open()
-// }
+// 停止接受分享面板
+const stopSheetRef = ref<InstanceType<typeof StopSheet>>()
+const shareStop = () => {
+  stopSheetRef.value?.open()
+}
 
-// // 关注加载状态
-// const isFollowingLoading = ref(false)
-// // 关注动态
-// const postFollow = async () => {
-//   // 设置为提交中状态
-//   isFollowingLoading.value = true
-//   try {
-//     await postsStore.addFollow(user.value.id)
-//     ElMessage.success('关注动态成功')
-//     // 跳转至动态页面
-//     toPostPage()
-//   } finally {
-//     // 无论提交成功或失败，都要解除提交中状态
-//     isFollowingLoading.value = false
-//   }
-// }
-// // 查看动态,跳转至动态页
-// const toPostPage = () => {
-//   router.push(`/post?e5id=${user.value.id}`)
-// }
+// 添加分享信息面板
+
+const addShareSheetRef = ref<InstanceType<typeof AddShareSheet>>()
+const shareAdd = () => {
+  addShareSheetRef.value?.open()
+}
+
+// 关注加载状态
+const isFollowingLoading = ref(false)
+// 关注动态
+const postFollow = async () => {
+  if (!user.value) return
+
+  // 设置为提交中状态
+  isFollowingLoading.value = true
+  try {
+    await postsStore.addFollow(user.value.id)
+    showToast('关注动态成功')
+    // 跳转至动态页面
+    toPostPage()
+  } finally {
+    // 无论提交成功或失败，都要解除提交中状态
+    isFollowingLoading.value = false
+  }
+}
+// 查看动态,跳转至动态页
+const toPostPage = () => {
+  if (!user.value) return
+  router.push(`/post?e5id=${user.value.id}`)
+}
 </script>
 <template>
   <van-nav-bar
@@ -113,12 +130,22 @@ const shareApply = () => {
     fixed
   />
   <van-empty v-if="!user" description="用户不存在" />
-  <div v-else>
+  <div class="card-container" v-else>
     <ApplySheet
       :e5id="user.id"
       ref="applySheetRef"
       v-if="buttonDisplay.applyButton"
     ></ApplySheet>
+    <StopSheet
+      :e5id="user.id"
+      ref="stopSheetRef"
+      v-if="buttonDisplay.stopButton"
+    ></StopSheet>
+    <AddShareSheet
+      :userId="user.id"
+      ref="addShareSheetRef"
+      v-if="buttonDisplay.addshareButton"
+    ></AddShareSheet>
     <div class="button-box">
       <van-button
         type="primary"
@@ -129,7 +156,13 @@ const shareApply = () => {
       >
         向TA申请E5账号
       </van-button>
-      <van-button type="danger" block round v-if="buttonDisplay.stopButton">
+      <van-button
+        type="danger"
+        block
+        round
+        v-if="buttonDisplay.stopButton"
+        @click="shareStop"
+      >
         停止接受TA的分享
       </van-button>
       <van-button
@@ -137,6 +170,7 @@ const shareApply = () => {
         block
         round
         v-if="buttonDisplay.addshareButton"
+        @click="shareAdd"
       >
         将TA添加至分享信息
       </van-button>
@@ -146,6 +180,8 @@ const shareApply = () => {
         block
         round
         v-if="buttonDisplay.followButton"
+        @click="postFollow"
+        :loading="isFollowingLoading"
       >
         关注动态
       </van-button>
@@ -155,6 +191,7 @@ const shareApply = () => {
         block
         round
         v-if="buttonDisplay.toPostButton"
+        @click="toPostPage"
       >
         查看动态
       </van-button>
@@ -172,10 +209,15 @@ const shareApply = () => {
     }
   }
 }
+.card-container {
+  margin-bottom: 50px;
+}
 .button-box {
   padding: 0 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dcdfe6; /* 下边框*/
   .van-button {
-    margin: 15px 0;
+    margin-top: 15px;
   }
 }
 </style>

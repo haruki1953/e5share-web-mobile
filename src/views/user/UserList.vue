@@ -44,16 +44,15 @@ const offset = ref({
 })
 
 onMounted(async () => {
-  await nextTick()
-  // 获取悬浮球元素
-  const bubbleEl = document.getElementById('floating-bubble')
-  // 获取tabbar
-  const tabbarEl = document.getElementById('layout-tabbar')
+  await nextTick() // 等待下一次更新才会有动画效果
+  // 计算悬浮球大小
+  const bubbleSize = (window.innerWidth / 375) * 48
+  // 计算tabbar高度
+  const tabbarHeight = (window.innerWidth / 375) * 50
+
   // 设置起始位置，tabbar上方24px
-  if (bubbleEl && tabbarEl) {
-    offset.value.x -= bubbleEl.clientWidth + 24
-    offset.value.y -= bubbleEl.clientHeight + 24 + tabbarEl.clientHeight
-  }
+  offset.value.x -= 24 + bubbleSize
+  offset.value.y -= 24 + bubbleSize + tabbarHeight
 })
 </script>
 
@@ -68,7 +67,6 @@ onMounted(async () => {
     v-model:offset="offset"
     axis="xy"
     magnetic="x"
-    id="floating-bubble"
   />
   <van-action-sheet v-model:show="actionSheetShow" :closeable="false">
     <div class="sheet-content">

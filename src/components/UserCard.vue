@@ -9,9 +9,11 @@ const props = withDefaults(
   defineProps<{
     user: User
     isPage?: boolean // 是否为用户主页
+    isShareInfo?: boolean // 是否为在分享页，没有多余的信息
   }>(),
   {
-    isPage: false
+    isPage: false,
+    isShareInfo: false
   }
 )
 
@@ -58,106 +60,108 @@ const last_login = computed(() => {
       </div>
       <E5sharingProgress :user="user"></E5sharingProgress>
     </div>
-    <div class="row-info" v-if="user.bio">
-      <div class="my-text-h2">简介：</div>
-      <div class="text-info my-text-p1" v-if="isPage">
-        {{ user.bio }}
-      </div>
-      <van-text-ellipsis
-        :rows="5"
-        :content="user.bio"
-        expand-text="展开"
-        collapse-text="收起"
-        class="text-info my-text-p1"
-        v-else
-      />
-    </div>
-    <div class="row-info" v-if="user.contact_info">
-      <div class="my-text-h2">联系方式：</div>
-      <div class="text-info my-text-p1" v-if="isPage">
-        {{ user.contact_info }}
-      </div>
-      <van-text-ellipsis
-        :rows="5"
-        :content="user.contact_info"
-        expand-text="展开"
-        collapse-text="收起"
-        class="text-info my-text-p1"
-        v-else
-      />
-    </div>
-
-    <div class="row-info" v-if="isPage">
-      <span class="my-text-h2">注册时间：</span>
-      <span class="text-info my-text-p1">
-        {{ formatTime(user.registered_at) }}
-      </span>
-    </div>
-    <div class="row-info" v-if="isPage">
-      <span class="my-text-h2">上次登录：</span>
-      <span class="text-info my-text-p1">
-        {{ last_login }}
-      </span>
-    </div>
-    <van-row
-      class="row-info"
-      v-if="user.account_status === accountStatus.sharing"
-    >
-      <van-col :span="12">
-        <div class="my-text-h2">E5订阅开始日：</div>
-        <div class="text-info my-text-p1">
-          {{ e5subscriptionDate }}
+    <div v-if="!isShareInfo">
+      <div class="row-info" v-if="user.bio">
+        <div class="my-text-h2">简介：</div>
+        <div class="text-info my-text-p1" v-if="isPage">
+          {{ user.bio }}
         </div>
-      </van-col>
-      <van-col :span="12">
-        <div class="my-text-h2">E5订阅结束日：</div>
-        <div class="text-info my-text-p1">
-          {{ e5expirationDate }}
+        <van-text-ellipsis
+          :rows="5"
+          :content="user.bio"
+          expand-text="展开"
+          collapse-text="收起"
+          class="text-info my-text-p1"
+          v-else
+        />
+      </div>
+      <div class="row-info" v-if="user.contact_info">
+        <div class="my-text-h2">联系方式：</div>
+        <div class="text-info my-text-p1" v-if="isPage">
+          {{ user.contact_info }}
         </div>
-      </van-col>
-    </van-row>
+        <van-text-ellipsis
+          :rows="5"
+          :content="user.contact_info"
+          expand-text="展开"
+          collapse-text="收起"
+          class="text-info my-text-p1"
+          v-else
+        />
+      </div>
 
-    <div v-if="isPage">
-      <RelatedUsers
-        :userIds="user.helping_users"
-        :title="`TA正在帮助 ${user.helping_users.length} 人`"
-        color="#1989fa"
-        v-if="user.helping_users.length"
-        class="users-list"
-      ></RelatedUsers>
-      <RelatedUsers
-        :userIds="user.helping_by_users"
-        :title="`${user.helping_by_users.length} 人正在帮助TA`"
-        color="#07c160"
-        v-if="user.helping_by_users.length"
-        class="users-list"
-      ></RelatedUsers>
-      <RelatedUsers
-        :userIds="user.helped_users"
-        :title="`TA帮助过 ${user.helped_users.length} 人`"
-        color="#1989fa"
-        v-if="user.helped_users.length"
-        class="users-list"
-      ></RelatedUsers>
-      <RelatedUsers
-        :userIds="user.helped_by_users"
-        :title="`${user.helped_by_users.length} 人帮助过TA`"
-        color="#07c160"
-        v-if="user.helped_by_users.length"
-        class="users-list"
-      ></RelatedUsers>
-    </div>
+      <div class="row-info" v-if="isPage">
+        <span class="my-text-h2">注册时间：</span>
+        <span class="text-info my-text-p1">
+          {{ formatTime(user.registered_at) }}
+        </span>
+      </div>
+      <div class="row-info" v-if="isPage">
+        <span class="my-text-h2">上次登录：</span>
+        <span class="text-info my-text-p1">
+          {{ last_login }}
+        </span>
+      </div>
+      <van-row
+        class="row-info"
+        v-if="user.account_status === accountStatus.sharing"
+      >
+        <van-col :span="12">
+          <div class="my-text-h2">E5订阅开始日：</div>
+          <div class="text-info my-text-p1">
+            {{ e5subscriptionDate }}
+          </div>
+        </van-col>
+        <van-col :span="12">
+          <div class="my-text-h2">E5订阅结束日：</div>
+          <div class="text-info my-text-p1">
+            {{ e5expirationDate }}
+          </div>
+        </van-col>
+      </van-row>
 
-    <div v-else-if="user.account_status === accountStatus.sharing">
-      <RelatedUsers
-        :userIds="user.helping_users"
-        :title="`正在帮助 ${user.helping_users.length} 人`"
-        color="#1989fa"
-        v-if="user.helping_users.length"
-        class="users-list"
-      ></RelatedUsers>
-      <van-cell title="还没有帮助" class="helpnum-text users-list" v-else>
-      </van-cell>
+      <div v-if="isPage">
+        <RelatedUsers
+          :userIds="user.helping_users"
+          :title="`TA正在帮助 ${user.helping_users.length} 人`"
+          color="#1989fa"
+          v-if="user.helping_users.length"
+          class="users-list"
+        ></RelatedUsers>
+        <RelatedUsers
+          :userIds="user.helping_by_users"
+          :title="`${user.helping_by_users.length} 人正在帮助TA`"
+          color="#07c160"
+          v-if="user.helping_by_users.length"
+          class="users-list"
+        ></RelatedUsers>
+        <RelatedUsers
+          :userIds="user.helped_users"
+          :title="`TA帮助过 ${user.helped_users.length} 人`"
+          color="#1989fa"
+          v-if="user.helped_users.length"
+          class="users-list"
+        ></RelatedUsers>
+        <RelatedUsers
+          :userIds="user.helped_by_users"
+          :title="`${user.helped_by_users.length} 人帮助过TA`"
+          color="#07c160"
+          v-if="user.helped_by_users.length"
+          class="users-list"
+        ></RelatedUsers>
+      </div>
+
+      <div v-else-if="user.account_status === accountStatus.sharing">
+        <RelatedUsers
+          :userIds="user.helping_users"
+          :title="`正在帮助 ${user.helping_users.length} 人`"
+          color="#1989fa"
+          v-if="user.helping_users.length"
+          class="users-list"
+        ></RelatedUsers>
+        <!-- <van-cell title="还没有帮助" class="helpnum-text users-list" v-else>
+      </van-cell> -->
+      </div>
     </div>
   </div>
 </template>
@@ -165,9 +169,9 @@ const last_login = computed(() => {
 <style lang="scss" scoped>
 .card {
   padding: 30px;
-  border-top: 1px solid #dcdfe6; /* 下边框*/
+  // border-top: 1px solid #dcdfe6; /* 上边框*/
   border-bottom: 1px solid #dcdfe6; /* 下边框*/
-  margin: -1px 0;
+  // margin: -1px 0;
 }
 .user-box {
   margin-right: 5px;
@@ -219,6 +223,17 @@ const last_login = computed(() => {
     margin-left: 10px;
     font-size: 16px;
     font-weight: bold;
+  }
+}
+.helpnum-text {
+  :deep() {
+    .van-cell__title {
+      // @extend .my-text-h1;
+      margin-left: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--my-color-b2);
+    }
   }
 }
 </style>

@@ -4,7 +4,7 @@ import { publicGetUsersService } from '@/api/public'
 import { userGetLastLoginTimeService } from '@/api/user'
 import { parseUserInfo } from '@/utils/resDataHandle'
 import { accountStatus, avatarConfig } from '@/config'
-import type { User } from '@/types/user'
+import type { User, UserForShow } from '@/types/user'
 
 export const useUsersStore = defineStore(
   'e5mobile-users',
@@ -31,7 +31,7 @@ export const useUsersStore = defineStore(
     }
 
     // 当找不到时，返回不存在用户的对象，用于显示可能不存在的用户时不报错
-    const findUserForShow = (id: number) => {
+    const findUserForShow = (id: number): User | UserForShow => {
       const user = findUserById(id)
       if (!user) {
         return {
@@ -50,7 +50,8 @@ export const useUsersStore = defineStore(
           helped_by_users: [],
           helped_users: [],
           helping_by_users: [],
-          helping_users: []
+          helping_users: [],
+          last_login: ''
         }
       }
       return user
