@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
 import { useUsersStore, useProfileStore, useShareStore } from '@/stores'
 import { accountStatus } from '@/config'
 import ShareRegisterSheet from './components/ShareRegisterSheet.vue'

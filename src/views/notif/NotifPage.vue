@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useProfileStore, useUsersStore, useShareStore } from '@/stores'
-// import NotifCard from './NotifCard.vue'
-// import ShareConfirmDialog from './ShareConfirmDialog.vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
+import { useProfileStore } from '@/stores'
+import NotifCard from './components/NotifCard.vue'
 
 // 用户信息
 const profileStore = useProfileStore()
@@ -14,39 +12,55 @@ onMounted(() => {
     profileStore.markAllNotifAsRead()
   }
 })
+onBeforeUnmount(() => {
+  // 在通知页关闭时全部已读
+  profileStore.markAllNotifAsRead()
+})
+
+// 重点通知
+const importantNotif = computed(() => {
+  return profileStore.importantNotif
+})
 
 // 通知数据，倒序排序，剔除重点通知
 const notifData = computed(() => {
   const notifs = profileStore.notifications.slice().reverse()
-  // if (importantNotif.value) {
-  //   const index = notifs.findIndex(
-  //     (notif) => notif.id === importantNotif.value.id
-  //   )
-  //   if (index !== -1) {
-  //     notifs.splice(index, 1)
-  //   }
-  // }
+  if (importantNotif.value) {
+    const index = notifs.findIndex(
+      (notif) => notif.id === importantNotif.value?.id
+    )
+    if (index !== -1) {
+      notifs.splice(index, 1)
+    }
+  }
   return notifs
 })
-
-// const router = useRouter()
-// // 添加分享：跳转至分享页面并带上add参数【修改：跳转至用户主页】
-// const addShareInfo = (userId: number) => {
-//   router.push(`/share?add=${userId}`)
-// }
-
-// const shareConfirmDialogRef = ref()
-// // 确认接受分享，打开对话框
-// const confirmShare = (userId: number) => {
-//   shareConfirmDialogRef.value.open(userId)
-// }
 </script>
 <template>
-  <div class="card-container"></div>
+  <van-empty
+    description="暂无通知"
+    v-if="!notifData.length && !importantNotif"
+  />
+  <div class="card-container" v-else>
+    <NotifCard v-if="importantNotif" :notif="importantNotif"></NotifCard>
+    <van-divider v-if="importantNotif"
+      ><van-icon name="like" color="#ee0a24"
+    /></van-divider>
+    <NotifCard
+      v-for="item in notifData"
+      :key="item.id"
+      :notif="item"
+    ></NotifCard>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .card-container {
   margin-bottom: 50px;
+  .van-divider {
+    margin: 0;
+    padding: 16px;
+    border-bottom: 1px solid #dcdfe6; /* 下边框*/
+  }
 }
 </style>

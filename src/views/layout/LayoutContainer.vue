@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
-import { removeLogin } from '@/utils/dataManage'
 import { avatarConfig, logoImage } from '@/config'
 import { isLoading } from '@/router'
-import LinkCollapse from './components/LinkCollapse.vue'
+import UserPopup from './components/UserPopup.vue'
 
 // 路由
 const router = useRouter()
@@ -16,121 +15,31 @@ const profileStore = useProfileStore()
 // 动态列表
 const postsStore = usePostsStore()
 
-// 退出登录
-const logout = async () => {
-  await showConfirmDialog({
-    title: '温馨提示',
-    message: '您确认要退出登录吗'
-  })
-  // 退出前跳转到首页
-  await router.push('/home')
-  await removeLogin()
-  isShowPopup.value = false
-}
-
 // 弹出层
-const isShowPopup = ref(false)
+const userPopupRef = ref<InstanceType<typeof UserPopup>>()
 
 // 点击头像弹出侧栏，未登录则跳转至登录
 const avatarClick = () => {
   if (authStore.token) {
-    isShowPopup.value = true
+    userPopupRef.value?.open()
   } else {
     router.push('/login')
   }
 }
+
+// 是否有重要通知
+const isImportantNotif = computed(() => {
+  return profileStore.importantNotif ? true : false
+})
 </script>
 
 <template>
+  <UserPopup ref="userPopupRef"></UserPopup>
   <van-overlay class="loading-overlay" :show="isLoading">
     <div class="wrapper">
       <van-loading color="#1989fa" />
     </div>
   </van-overlay>
-  <van-popup
-    v-model:show="isShowPopup"
-    position="left"
-    :style="{ width: '90%', height: '100%' }"
-  >
-    <div class="popup-box">
-      <div
-        class="user van-haptics-feedback"
-        @click="router.push(`/user/${profileStore.user?.id}`)"
-      >
-        <div class="user-avatar">
-          <van-image round :src="profileStore.user?.avatar"></van-image>
-        </div>
-        <div class="user-nickname my-text-h1">
-          {{ profileStore.user?.nickname }}
-        </div>
-        <div class="user-username my-text-p1">
-          @{{ profileStore.user?.username }}
-        </div>
-      </div>
-      <van-divider :hairline="false" />
-      <div class="cell-nav" @click="isShowPopup = false">
-        <van-cell
-          title="首页"
-          clickable
-          to="/home"
-          size="large"
-          icon="wap-home"
-          replace
-        />
-        <van-cell
-          title="用户列表"
-          clickable
-          to="/user-list"
-          size="large"
-          icon="friends"
-          replace
-        />
-        <van-cell
-          title="E5分享管理"
-          clickable
-          to="/share"
-          size="large"
-          icon="cluster"
-          replace
-        />
-        <van-cell title="通知" clickable to="/notif" size="large" icon="bell" />
-        <van-cell
-          title="动态"
-          clickable
-          to="/post"
-          size="large"
-          icon="comment"
-          replace
-        />
-        <van-cell
-          title="个人主页"
-          clickable
-          :to="`/user/${profileStore.user?.id}`"
-          size="large"
-          icon="user"
-        />
-        <van-cell
-          title="设置"
-          clickable
-          to="/setting"
-          size="large"
-          icon="setting"
-        />
-      </div>
-      <van-button
-        class="logout-button"
-        type="primary"
-        round
-        block
-        @click="logout"
-      >
-        退出登录
-      </van-button>
-    </div>
-    <div class="popup-buttom">
-      <LinkCollapse></LinkCollapse>
-    </div>
-  </van-popup>
   <van-nav-bar
     @click-left="avatarClick"
     @click-right="router.push('/setting')"
@@ -166,9 +75,11 @@ const avatarClick = () => {
       icon="bell"
       :badge-props="{
         content: profileStore.unreadNotifCount,
-        dot: !profileStore.readNotifUuid.length,
+        dot:
+          !profileStore.readNotifUuid.length ||
+          (isImportantNotif && !profileStore.unreadNotifCount),
         max: 9,
-        color: '#1989fa',
+        color: isImportantNotif ? '#ee0a24' : '#1989fa',
         showZero: false
       }"
     ></van-tabbar-item>
@@ -218,50 +129,6 @@ const avatarClick = () => {
         font-size: 25px;
       }
     }
-  }
-}
-
-.van-popup {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  .popup-box {
-    margin: 30px;
-    .user-avatar {
-      .van-image {
-        width: 80px;
-        height: 80px;
-      }
-    }
-    .user-nickname {
-      margin-bottom: 5px;
-    }
-    .cell-nav {
-      .van-cell {
-        border-radius: 20px; /* 设置圆角 */
-        :deep() {
-          .van-cell__title {
-            margin-left: 10px;
-            font-weight: bold; /* 设置昵称字体加粗 */
-            // color: var(--my-color-b1); /* 设置昵称字体颜色 */
-          }
-          .van-cell__left-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 20px;
-          }
-          // .van-cell__right-icon {
-          //   display: none;
-          // }
-        }
-      }
-    }
-    .logout-button {
-      margin-top: 10px;
-    }
-  }
-  .popup-buttom {
-    margin: 0 30px 30px 30px;
   }
 }
 

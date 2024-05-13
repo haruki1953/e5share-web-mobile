@@ -17,6 +17,7 @@ declare module 'vue' {
     UserCard: typeof import('./src/components/UserCard.vue')['default']
     UserItem: typeof import('./src/components/UserItem.vue')['default']
     VanActionSheet: typeof import('vant/es')['ActionSheet']
+    VanBadge: typeof import('vant/es')['Badge']
     VanButton: typeof import('vant/es')['Button']
     VanCell: typeof import('vant/es')['Cell']
     VanCellGroup: typeof import('vant/es')['CellGroup']
