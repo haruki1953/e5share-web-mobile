@@ -8,7 +8,6 @@ import {
   useShareStore
 } from '@/stores'
 import { accountStatus } from '@/config'
-import { formatDate, formatTime } from '@/utils/timeUtils'
 import ApplySheet from './components/ApplySheet.vue'
 import StopSheet from './components/StopSheet.vue'
 import AddShareSheet from './components/AddShareSheet.vue'
@@ -116,7 +115,7 @@ const postFollow = async () => {
 // 查看动态,跳转至动态页
 const toPostPage = () => {
   if (!user.value) return
-  router.push(`/post?e5id=${user.value.id}`)
+  router.push(`/post-info/${user.value.id}`)
 }
 </script>
 <template>
@@ -125,10 +124,15 @@ const toPostPage = () => {
     left-text="返回"
     left-arrow
     @click-left="router.back()"
+    @click-right="router.push('/home')"
     safe-area-inset-top
     placeholder
     fixed
-  />
+  >
+    <template #right>
+      <van-icon class="nav-right" name="wap-home" color="#323233" />
+    </template>
+  </van-nav-bar>
   <van-empty v-if="!user" description="用户不存在" />
   <div class="card-container" v-else>
     <ApplySheet
@@ -209,6 +213,12 @@ const toPostPage = () => {
     }
   }
 }
+.nav-right {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+}
+
 .card-container {
   margin-bottom: 50px;
 }

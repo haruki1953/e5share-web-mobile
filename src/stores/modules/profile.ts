@@ -85,8 +85,8 @@ export const useProfileStore = defineStore(
       // 根据路由参数查找重点通知
       const notifUuid = route.query.notif
       // 【test】
-      console.log('notifUuid', notifUuid, typeof notifUuid)
-      console.log(route.query)
+      // console.log('notifUuid', notifUuid, typeof notifUuid)
+      // console.log(route.query)
 
       if (!notifUuid || typeof notifUuid !== 'string') return
       const notif = findNotifById(notifUuid)

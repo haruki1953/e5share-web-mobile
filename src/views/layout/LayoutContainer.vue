@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
 import { avatarConfig, logoImage } from '@/config'
@@ -30,6 +30,11 @@ const avatarClick = () => {
 // 是否有重要通知
 const isImportantNotif = computed(() => {
   return profileStore.importantNotif ? true : false
+})
+
+onMounted(() => {
+  console.log(postsStore.unreadPostCount)
+  console.log(postsStore.unreadPostCount)
 })
 </script>
 
@@ -76,7 +81,8 @@ const isImportantNotif = computed(() => {
       :badge-props="{
         content: profileStore.unreadNotifCount,
         dot:
-          !profileStore.readNotifUuid.length ||
+          (!profileStore.readNotifUuid.length &&
+            profileStore.unreadNotifCount !== 0) ||
           (isImportantNotif && !profileStore.unreadNotifCount),
         max: 9,
         color: isImportantNotif ? '#ee0a24' : '#1989fa',
@@ -86,10 +92,11 @@ const isImportantNotif = computed(() => {
     <van-tabbar-item
       replace
       to="/post"
-      icon="comment"
+      icon="chat"
       :badge-props="{
         content: postsStore.unreadPostCount,
-        dot: !postsStore.readPostUuid.length,
+        dot:
+          !postsStore.readPostUuid.length && postsStore.unreadPostCount !== 0,
         max: 9,
         color: '#1989fa',
         showZero: false

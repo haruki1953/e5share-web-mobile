@@ -79,9 +79,6 @@ onMounted(async () => {
 .card-container {
   margin-bottom: 50px;
 }
-.van-floating-bubble {
-  transform: translate3d(350.912px, calc(100vh - 50px), 0px);
-}
 .sheet-content {
   margin: 10px;
   .van-field {

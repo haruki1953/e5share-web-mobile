@@ -25,7 +25,7 @@ const router = createRouter({
         },
         {
           // 动态详情
-          path: '/post-info',
+          path: '/post-info/:id',
           component: () => import('@/views/post/PostInfo.vue')
         },
         {

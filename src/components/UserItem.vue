@@ -32,9 +32,13 @@ const user = computed(() => {
     <div class="name-box">
       <div class="my-text-h3">{{ user.nickname }}</div>
       <div
-        @click.stop="usernameLink && $router.push(`/user/${user.id}`)"
+        v-if="usernameLink"
+        @click.stop="$router.push(`/user/${user.id}`)"
         class="my-text-p2 van-haptics-feedback"
       >
+        @{{ user.username }}
+      </div>
+      <div v-else class="my-text-p2 van-haptics-feedback">
         @{{ user.username }}
       </div>
     </div>
