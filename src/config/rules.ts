@@ -38,14 +38,14 @@ export const userRules: Record<
   ],
   contactInfo: [
     {
-      pattern: /^.{0,500}$/,
+      pattern: /^[\s\S]{0,500}$/,
       message: '联系信息长度不能超过500个字符',
       trigger: 'onBlur'
     }
   ],
   bio: [
     {
-      pattern: /^.{0,500}$/,
+      pattern: /^[\s\S]{0,500}$/,
       message: '简介长度不能超过500个字符',
       trigger: 'onBlur'
     }
@@ -66,14 +66,14 @@ export const avatarRule = {
 export const shareRules: Record<'message' | 'note', FieldRule[]> = {
   message: [
     {
-      pattern: /^.{0,500}$/,
+      pattern: /^[\s\S]{0,500}$/,
       message: '留言长度不能超过500个字符',
       trigger: 'onBlur'
     }
   ],
   note: [
     {
-      pattern: /^.{0,500}$/,
+      pattern: /^[\s\S]{0,500}$/,
       message: '备注长度不能超过500个字符',
       trigger: 'onBlur'
     }

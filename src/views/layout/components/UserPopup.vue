@@ -86,7 +86,7 @@ defineExpose({
           clickable
           to="/post"
           size="large"
-          icon="comment"
+          icon="chat"
           replace
         />
         <van-cell

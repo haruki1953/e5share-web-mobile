@@ -114,6 +114,7 @@ const removeFollow = async () => {
       <van-button
         class="send-button"
         type="danger"
+        size="small"
         block
         round
         @click="removeFollow"
@@ -147,6 +148,7 @@ const removeFollow = async () => {
       <van-button
         class="send-button"
         type="primary"
+        size="small"
         block
         round
         @click="postSend"

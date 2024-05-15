@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, useProfileStore, usePostsStore } from '@/stores'
 import { avatarConfig, logoImage } from '@/config'
@@ -30,11 +30,6 @@ const avatarClick = () => {
 // 是否有重要通知
 const isImportantNotif = computed(() => {
   return profileStore.importantNotif ? true : false
-})
-
-onMounted(() => {
-  console.log(postsStore.unreadPostCount)
-  console.log(postsStore.unreadPostCount)
 })
 </script>
 

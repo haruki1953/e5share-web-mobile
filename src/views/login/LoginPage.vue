@@ -222,6 +222,8 @@ watch(isRegister, () => {
 }
 .title {
   margin-left: 30px;
+  font-size: 30px;
+  color: var(--my-color-b1);
 }
 .submit-button {
   margin: 20px;

@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import type { User } from '@/types/user'
 import { accountStatus } from '@/config'
-import { formatDate } from '@/utils/timeUtils'
+import { formatDate, dateRound } from '@/utils/timeUtils'
 
 const props = defineProps<{
   user: User
@@ -31,7 +31,8 @@ const totalDays = computed(() => {
 const remainingDays = computed(() => {
   if (!endDate.value || !startDate.value) return null
   return Math.round(
-    (endDate.value.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
+    (endDate.value.getTime() - dateRound(new Date()).getTime()) /
+      (1000 * 60 * 60 * 24)
   )
 })
 // 进度值
@@ -42,7 +43,7 @@ const progressVal = computed(() => {
     typeof remainingDays.value !== 'number'
   )
     return null
-  if (startDate.value > new Date()) {
+  if (startDate.value > dateRound(new Date())) {
     return 0 // 未开始状态，即订阅开始日期晚于当前日期
   }
   return Math.min(
@@ -63,7 +64,7 @@ const progressStatus = computed(() => {
     status = 'warning' // 警告状态
   } else if (remainingDays.value <= 0) {
     status = 'exception' // 异常状态、过期
-  } else if (startDate.value > new Date()) {
+  } else if (startDate.value > dateRound(new Date())) {
     status = 'notStarted' // 未开始状态，即订阅开始日期晚于当前日期
   }
   return status
