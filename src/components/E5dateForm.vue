@@ -129,25 +129,25 @@ defineExpose({
     <div class="form-box">
       <div v-if="isSelectedDate" class="picker-box">
         <div class="date-box">
-          <div class="my-text-h2">E5订阅开始日</div>
+          <div class="my-text-h3">E5订阅开始日</div>
           <div class="my-text-p1">{{ formatDate(startDate) }}</div>
         </div>
         <van-button round @click="openPopup"> 选择日期 </van-button>
         <div class="date-box">
-          <div class="my-text-h2">E5订阅结束日</div>
+          <div class="my-text-h3">E5订阅结束日</div>
           <div class="my-text-p1">{{ formatDate(endDate) }}</div>
         </div>
       </div>
       <div v-else class="num-box">
         <div class="day-row">
-          <div class="my-text-h2">总天数</div>
+          <div class="my-text-h3">总天数</div>
           <div class="slider-stepper">
             <van-slider v-model="totalDays" :min="1" :max="365" />
             <van-stepper v-model="totalDays" integer :min="1" :max="365" />
           </div>
         </div>
         <div class="day-row">
-          <div class="my-text-h2">剩余天数</div>
+          <div class="my-text-h3">剩余天数</div>
           <div class="slider-stepper">
             <van-slider v-model="remainingDays" :min="0" :max="totalDays" />
             <van-stepper
@@ -155,7 +155,6 @@ defineExpose({
               integer
               :min="0"
               :max="totalDays"
-              :auto-fixed="false"
             />
           </div>
         </div>
@@ -187,17 +186,17 @@ defineExpose({
 <style lang="scss" scoped>
 .picker-box {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  margin: 20px;
+  margin: 20px 0;
 }
 .num-box {
-  margin: 20px 10px;
+  margin: 20px 0;
   .day-row {
     margin: 10px 0;
     .slider-stepper {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       align-items: center;
       margin-top: 5px;
       .van-slider {

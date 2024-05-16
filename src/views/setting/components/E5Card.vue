@@ -23,7 +23,7 @@ const showOldData = () => {
   const subDate = formatDate(profileStore.user.e5_subscription_date)
   const expDate = formatDate(profileStore.user.e5_expiration_date)
   // 数据非法时 设置默认为90天
-  if (!subDate || !expDate) return e5dateFormRef.value?.calculateDates(90, 90)
+  if (!subDate || !expDate) return e5dateFormRef.value?.calculateDates(90, 89)
   // 数据有效
   e5Form.value.subscriptionDate = subDate
   e5Form.value.expirationDate = expDate
@@ -69,7 +69,17 @@ const submitE5info = async () => {
 </script>
 <template>
   <div class="card">
-    <div class="my-text-h2 setting-title">修改E5订阅信息</div>
+    <div class="setting-title">
+      <div class="my-text-h1">修改E5订阅信息</div>
+      <van-button
+        type="default"
+        size="small"
+        round
+        @click="$router.push('/share')"
+      >
+        E5分享管理
+      </van-button>
+    </div>
     <E5dateForm
       v-model="e5Form"
       ref="e5dateFormRef"
@@ -98,11 +108,13 @@ const submitE5info = async () => {
   padding: 20px;
   border-bottom: 1px solid #dcdfe6; /* 下边框*/
 }
-
+.setting-title {
+  display: flex;
+  justify-content: space-between;
+}
 .e5date-form {
   margin-top: 10px;
 }
-
 .button-box {
   margin-top: 15px;
   display: flex;

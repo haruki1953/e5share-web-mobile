@@ -10,6 +10,14 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      // 获取当前窗口宽度
+      const screenWidth = window.innerWidth
+      // 如果屏幕宽度大于800像素，则重定向到pc端网站
+      if (screenWidth > 800) {
+        window.location.href = 'https://e5.sakiko.top'
+      }
+    </script>
     <script type="module" src="/src/main.ts"></script>
     <!-- 嵌入discord -->
     <!-- <script src='https://static.sakiko.top/cdn_jsdelivr_net/npm/@widgetbot/crate@3' async defer>

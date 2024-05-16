@@ -25,7 +25,7 @@ const e5dateFormRef = ref()
 
 // 显示初始化订阅信息 默认为90天
 const showOldData = () => {
-  e5dateFormRef.value.calculateDates(90, 90)
+  e5dateFormRef.value.calculateDates(90, 89)
 }
 
 // 提交中状态标记
@@ -72,7 +72,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .sheet-content {
-  margin: 10px;
+  margin: 10px 20px;
   .van-button {
     margin-top: 20px;
   }

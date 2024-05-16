@@ -60,7 +60,7 @@ const submitEmail = async () => {
 </script>
 <template>
   <div class="card">
-    <div class="my-text-h2 setting-title">修改邮箱</div>
+    <div class="my-text-h1 setting-title">修改邮箱</div>
     <van-form ref="form" class="setting-form">
       <div class="field-lable my-text-p3">邮箱</div>
       <van-field

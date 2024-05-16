@@ -69,7 +69,7 @@ const resetform = () => {
 </script>
 <template>
   <div class="card">
-    <div class="my-text-h2 setting-title">修改密码</div>
+    <div class="my-text-h1 setting-title">修改密码</div>
     <van-form ref="form" class="setting-form">
       <div class="field-lable my-text-p3">旧密码</div>
       <van-field

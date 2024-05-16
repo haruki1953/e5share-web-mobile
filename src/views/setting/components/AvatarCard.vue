@@ -63,7 +63,7 @@ const submitAvatar = async () => {
 </script>
 <template>
   <div class="card">
-    <div class="my-text-h2 setting-title">修改头像</div>
+    <div class="my-text-h1 setting-title">修改头像</div>
     <div class="avatar-uploader">
       <van-uploader :after-read="onSelectFile">
         <div
@@ -103,7 +103,7 @@ const submitAvatar = async () => {
   justify-content: center;
   // margin-top: 10px;
   .van-uploader {
-    border: 1px dashed #dcdfe6;
+    border: 2px dashed #dcdfe6;
     border-radius: 128px;
     overflow: hidden;
     transition: 0.1s;

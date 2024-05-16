@@ -6,8 +6,10 @@ import AvatarCard from './components/AvatarCard.vue'
 import EmailCard from './components/EmailCard.vue'
 import PasswordCard from './components/PasswordCard.vue'
 import E5Card from './components/E5Card.vue'
-// import ClearNotifCard from './components/ClearNotifCard.vue'
-// import DeleteUserCard from './components/DeleteUserCard.vue'
+import ClearNotifCard from './components/ClearNotifCard.vue'
+import DeleteUserCard from './components/DeleteUserCard.vue'
+import { useProfileStore } from '@/stores'
+import { accountStatus } from '@/config'
 
 const refE5Card = ref<ComponentPublicInstance>()
 
@@ -22,7 +24,9 @@ const scrollToCard = (cardRef: ComponentPublicInstance) => {
 }
 
 const route = useRoute()
-onMounted(() => {
+onMounted(async () => {
+  // console.log(route.query.setting)
+  await nextTick()
   // 判断参数，滚动至对应卡片
   switch (route.query.setting) {
     case 'e5':
@@ -30,6 +34,8 @@ onMounted(() => {
       break
   }
 })
+
+const profileStore = useProfileStore()
 </script>
 <template>
   <van-nav-bar
@@ -51,7 +57,12 @@ onMounted(() => {
     <AvatarCard></AvatarCard>
     <EmailCard></EmailCard>
     <PasswordCard></PasswordCard>
-    <E5Card></E5Card>
+    <E5Card
+      v-if="profileStore.user?.account_status === accountStatus.sharing"
+      ref="refE5Card"
+    ></E5Card>
+    <ClearNotifCard></ClearNotifCard>
+    <DeleteUserCard></DeleteUserCard>
   </div>
 </template>
 
